@@ -1,0 +1,17 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+
+development:
+  <<: *default
+  database: sei_chat_poc_dev
+
+test:
+  <<: *default
+  database: sei_chat_poc_test
+
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
