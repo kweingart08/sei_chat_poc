@@ -37,41 +37,41 @@ class InitializeAndSeedVectorDb
   private
 
   def build_employee_profiles_array
-    employee_profiles = []
-    page = 1
+    profiles = fetch_employee_profiles_from_folder
+    profiles.map do |profile|
+      chunks = chunk_text(profile[:content])
+      chunks.map { |chunk| "#{profile[:name]}: #{chunk}" } # Prepending the name to each chunk
+    end.flatten # Ensure you have a flat array of strings if required by @langchain.add_texts
+
 
     # loop through all pages of employee profiles from the profiles folder
-    loop do
-      puts "Fetching employee profiles from page #{page}..."
-      profiles, total_pages = fetch_employee_profiles_from_folder(page)
-      employee_profiles.concat(profiles)
+    # fetch_employee_profiles_from_folder(page)
 
-      break if page >= total_pages # End loop on final page
-      page += 1
+    # parse the data and chunk the text using Langchain::Chunker::Text. Include the first line which is the name of the employee with each chunk for better context. 
+  end
+
+  def fetch_employee_profiles_from_folder
+    # go into the lib/profiles directory and loop through every pdf 
+    profiles_dir = Rails.root.join('lib', 'profiles', '*.pdf') # Ensure this path is correct
+    Dir[profiles_dir].map do |pdf_path|
+      extract_text_from_pdf(pdf_path)
     end
-
-    # parsed_employee_profiles = employee_profiles.map do |profile|
-    #   html = profile.dig("content", "rendered")
-    #   title = profile.dig("title", "rendered")
-    #   text = Nokogiri::HTML(html).text # parse content from HTML into text
-    #   chunks = Langchain::Chunker::Text.new(text, chunk_size: 2500, chunk_overlap: 500, separator: "\n").chunks # chunk text into smaller pieces to reduce context window and produce better embeddings
-    #   chunks.map { |chunk| "#{title} - \n #{chunk.text}" } # Include title with each chunk for better context
-    # end
-
-    # parsed_employee_profiles.flatten
   end
 
-  def fetch_employee_profiles_from_folder(page)
-    # url = "https://launchpadlab.com/wp-json/wp/v2/posts?per_page=15"
-    # response = HTTParty.get("#{url}&page=#{page}")
-    # posts = response.parsed_response
+  # def chunk_text(text)
+  #   text.scan(/.{1,#{chunk_size}}/)
+  # end
 
-    # Retrieve total pages from the response header
-    # total_pages = response.headers["x-wp-totalpages"].to_i
-    # [posts, total_pages]
+  # Assuming Langchain recommends chunks of 500 characters
+  def chunk_text(text, chunk_size = 500)
+    # Break the text into chunks without cutting off words
+    text.scan(/\S.{0,#{chunk_size-1}}\S(?=\s|$)|\S+/)
   end
 
-  def chunk_text(text)
-    text.scan(/.{1,#{chunk_size}}/)
+
+  def extract_text_from_pdf(path)
+    reader = PDF::Reader.new(path)
+    text = reader.pages.map(&:text).join(" ")
+    {name: text.lines.first.strip, content: text}
   end
 end

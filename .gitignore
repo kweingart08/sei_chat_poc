@@ -40,9 +40,11 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
-/config/application.yml
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
 .idea
+
+# Ignore application configuration
+/config/application.yml

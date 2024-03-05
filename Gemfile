@@ -77,3 +77,7 @@ gem 'sequel'
 gem 'pgvector'
 
 gem 'httparty'
+
+gem 'figaro'
+
+gem 'pdf-reader'
