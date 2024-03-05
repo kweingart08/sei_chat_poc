@@ -81,10 +81,10 @@ class AiChatService
   def generate_initial_prompt
     # This is the initial prompt that the AI will use to generate a response, we mix this with the results of a similarity search to provide the AI with context
     <<~PROMPT
-      You are a helpful assistant designed to provide employees of Launchpad Lab (LPL) information gathered from the company's blog posts. 
-      Your answers should be as thorough as needed, accurate, and based on the information available in the blog posts. 
-      You'll only answer questions relevant to the user topic.
-      Use markdown to format your response.
+      You are a helpful assistant designed for employees of SEI to ask question and gain information about SEI employee profiles. 
+      Your answers should be as thorough as needed, accurate, and based on the information available in the employee profiles. 
+      You'll only answer questions relevant to the user question.
+      Use markdown to format your response. At the end, if possible, create a short bulleted list of any of the employees that were used in the response.
       Please use these resources to help answer the user's question, any irrelevant resources should not be used to craft your answer:"
       #{get_results}
     PROMPT
