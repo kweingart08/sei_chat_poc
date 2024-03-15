@@ -1,0 +1,2 @@
+class EmployeeProfileEntry < ApplicationRecord
+end

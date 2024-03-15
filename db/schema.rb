@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_15_125618) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_15_192909) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -23,10 +23,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_15_125618) do
     t.index ["user_id"], name: "index_chat_threads_on_user_id"
   end
 
-# Could not dump table "employee_profile_embeddings" because of following StandardError
-#   Unknown type 'vector(1536)' for column 'vectors'
-
-# Could not dump table "employee_profile_embeddings_test" because of following StandardError
+# Could not dump table "employee_profile_entries" because of following StandardError
 #   Unknown type 'vector(1536)' for column 'vectors'
 
   create_table "messages", force: :cascade do |t|
