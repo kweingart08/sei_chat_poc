@@ -7,14 +7,14 @@ class InitializeAndSeedVectorDb
 
   def run
     instantiate_langchainrb
-    initialize_vector_database
+    # initialize_vector_database
     seed_vector_database
     close_connection
   end
 
   def instantiate_langchainrb
     # @langchain = Langchain::Vectorsearch::Pgvector.new(url: @database_url, index_name: 'employee_profile_embeddings', llm: @llm)
-    @langchain = Langchain::Vectorsearch::Pgvector.new(url: @database_url, index_name: 'employee_profile_embeddings_test', llm: @llm)
+    @langchain = Langchain::Vectorsearch::Pgvector.new(url: @database_url, index_name: 'employee_profile_entries', llm: @llm)
   end
 
   def initialize_vector_database
