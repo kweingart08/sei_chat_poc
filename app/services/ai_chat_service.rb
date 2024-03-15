@@ -81,10 +81,9 @@ class AiChatService
   def generate_initial_prompt
     # This is the initial prompt that the AI will use to generate a response, we mix this with the results of a similarity search to provide the AI with context
     <<~PROMPT
-      You are a helpful assistant designed for employees of SEI to ask question and gain information about SEI employee profiles. 
-      Your answers should be as thorough as needed, accurate, and based on the information available in the employee profiles. 
-      You'll only answer questions relevant to the user question.
-      Use markdown to format your response. At the end, if possible, create a short bulleted list of any of the employees that were used in the response.
+      You are a helpful assitant that is designed to give information about SEI employees that match and answer questions based on their name, employees, or skillsets in their employee profile.
+      You'll only answer questions relevant to the user question. Please provide the employee's name and a brief description of their experience that was used for the answer. Only include the name of the person if they have relevant information and experience that answers the question. Do not include anyone that does not have any relevant experience.
+      Use markdown to format your response. 
       Please use these resources to help answer the user's question, any irrelevant resources should not be used to craft your answer:"
       #{get_results}
     PROMPT
@@ -113,7 +112,8 @@ class AiChatService
 
   def langchain
     database_url = ENV['DATABASE_URL'] || Rails.configuration.database_configuration[Rails.env]
-    @langchain ||= Langchain::Vectorsearch::Pgvector.new(url: database_url, index_name: 'employee_profile_embeddings', llm: llm)
+    # @langchain ||= Langchain::Vectorsearch::Pgvector.new(url: database_url, index_name: 'employee_profile_embeddings', llm: llm)
+    @langchain ||= Langchain::Vectorsearch::Pgvector.new(url: database_url, index_name: 'employee_profile_embeddings_test', llm: llm)
   end
 
   def llm
