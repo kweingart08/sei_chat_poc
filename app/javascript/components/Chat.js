@@ -134,6 +134,29 @@ function Chat({ chat_threads }) {
     setMessages([])
   }
 
+  async function handleLogout() {
+    try {
+      const response = await fetch('/users/sign_out', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          // Rails might require CSRF token, ensure it's correctly handled
+          'X-CSRF-Token': document.querySelector('[name=csrf-token]').content,
+        },
+        credentials: 'include', // Important for including session cookies
+      })
+
+      if (response.ok) {
+        // Redirect or perform some action upon successful logout
+        window.location.href = '/'
+      } else {
+        throw new Error('Logout failed')
+      }
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
+
   return (
     <div className='flex h-screen'>
       <div className='w-1/4 bg-gray-800 text-white overflow-auto'>
@@ -144,6 +167,7 @@ function Chat({ chat_threads }) {
           >
             New Thread
           </button>
+          <button onClick={handleLogout}>Logout</button>
         </div>
         {chatThreads.map((chatThread, index) => (
           <div

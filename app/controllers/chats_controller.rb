@@ -1,6 +1,8 @@
 class ChatsController < ApplicationController
+  before_action :authenticate_user!
+
   def chat
-    @chat_threads = ChatThread.all.order(created_at: :desc)
+    @chat_threads = current_user.chat_threads.order(created_at: :desc)
   end
 
   def get_chat_threads

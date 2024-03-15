@@ -81,3 +81,6 @@ gem 'httparty'
 gem 'figaro'
 
 gem 'pdf-reader'
+
+gem 'devise'
+
